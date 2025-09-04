@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Queue Status{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-6">
+    <div class="card shadow-sm mb-3">
+      <div class="card-body text-center">
+        <h3 class="mb-3">Now Calling</h3>
+        {% if latest_called %}
+          <div class="display-2">#{{ latest_called.number }}</div>
+        {% else %}
+          <div class="display-6">—</div>
+          <p class="text-muted">No one has been called yet today.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <h4 class="mb-3">Pending Queue (Today)</h4>
+        {% if pending %}
+          <ul class="list-group">
+            {% for t in pending %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                #{{ t.number }}
+                <span class="badge bg-secondary">{{ t.status }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted">No pending tickets.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

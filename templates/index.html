@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Take a Ticket{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-4 text-center">
+        <h1 class="display-6 mb-3">Need Service?</h1>
+        <p class="lead">Tap the button to get your queue number.</p>
+        <form method="post" action="{% url 'take_ticket' %}">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn btn-lg btn-success" type="submit">Get Ticket</button>
+        </form>
+        <hr>
+        <p class="mb-1">Currently pending tickets today: <strong>{{ pending_count }}</strong></p>
+        {% if latest_called %}
+          <p>Now calling: <span class="h4">#{{ latest_called.number }}</span></p>
+        {% else %}
+          <p>No tickets have been called yet.</p>
+        {% endif %}
+        <a class="btn btn-link" href="{% url 'status' %}">View Status Screen</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

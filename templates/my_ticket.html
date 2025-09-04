@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}My Ticket{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow-sm">
+      <div class="card-body p-4 text-center">
+        {% if ticket %}
+          <h2>Your Ticket Number</h2>
+          <div class="display-1 fw-bold">#{{ ticket.number }}</div>
+          <p class="mt-3">Status: <span class="badge bg-secondary">{{ ticket.status }}</span></p>
+          <p>Position in queue: <strong>{{ ticket.position_in_queue }}</strong></p>
+          <a class="btn btn-outline-primary" href="{% url 'status' %}">Status Screen</a>
+        {% else %}
+          <p>No active ticket in session.</p>
+          <a class="btn btn-primary" href="/">Get a Ticket</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

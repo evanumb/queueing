@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-3">Admin Dashboard</h2>
+<div class="row">
+  <div class="col-md-6">
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <h4 class="mb-3">Controls</h4>
+        <form method="post" action="{% url 'call_next' %}">
+          {% csrf_token %}
+          <button class="btn btn-primary" type="submit">Call Next Ticket</button>
+        </form>
+        <form class="mt-3" method="post" action="{% url 'reset_today' %}" onsubmit="return confirm('Reset today\'s queue? This deletes today\'s tickets.');">
+          {% csrf_token %}
+          <button class="btn btn-danger" type="submit">Reset Today</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm mb-3">
+      <div class="card-body">
+        <h4 class="mb-3">Stats</h4>
+        <p>Served today: <strong>{{ served_today }}</strong></p>
+        {% if latest_called %}
+          <p>Currently calling: <strong>#{{ latest_called.number }}</strong></p>
+        {% else %}
+          <p>Nothing called yet.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h4 class="mb-3">Pending Tickets</h4>
+    {% if pending %}
+      <table class="table table-striped">
+        <thead><tr><th>#</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for t in pending %}
+          <tr>
+            <td>#{{ t.number }}</td>
+            <td>{{ t.status }}</td>
+            <td>
+              <a class="btn btn-success btn-sm" href="{% url 'mark_served' t.id %}">Mark Served</a>
+              <a class="btn btn-warning btn-sm" href="{% url 'skip_ticket' t.id %}">Skip</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="text-muted">No pending tickets.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
